@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+f = np.logspace(-9.5, -6, 1000)
+
+# Phase-Space Condensation resonant peak
+f0 = 1.65e-8
+A = 4.2e-16
+sigma = 0.31 * f0 / 2.355
+Omega_tuft = 8e-18 + A * np.exp(-(f - f0)**2 / (2*sigma**2))
+
+# Other models
+Omega_inf = 1e-15 * (f / 1e-8)**0
+Omega_strings = 6e-17 * (f/1e-8)**(-1)
+Omega_pt = 2e-16 * np.exp(-(f - 3e-8)**2 / (2*(1.2e-8)**2))
+
+plt.figure(figsize=(9, 6))
+plt.loglog(f, Omega_tuft, 'orange', lw=3.5, label='Phase-Space Condensation (this work)')
+plt.loglog(f, Omega_inf, 'red', ls='--', lw=2, label='Inflation')
+plt.loglog(f, Omega_strings, 'purple', lw=2, alpha=0.8, label='Cosmic Strings')
+plt.loglog(f, Omega_pt, 'gray', lw=2, alpha=0.7, label='Standard Phase Transition')
+
+# Sensitivity regions
+plt.fill_between([5e-9, 1e-7], 1e-18, 1e-10, color='blue', alpha=0.12, label='LISA (2035+)')
+plt.fill_between([1e-9, 5e-8], 1e-18, 5e-14, color='green', alpha=0.12, label='PTA (SKA/NANOGrav)')
+
+plt.xlim(1e-9.5, 1e-6)
+plt.ylim(1e-18, 1e-9)
+plt.xlabel('Frequency $f$ [Hz]', fontsize=14)
+plt.ylabel(r'$\Omega_{\rm gw}(f) h^2$', fontsize=14)
+plt.title('Resonant Stochastic GW Background from Phase-Space Condensation', fontsize=14)
+plt.legend(fontsize=12)
+plt.grid(True, which="both", ls=":", alpha=0.5)
+plt.tight_layout()
+plt.savefig('gw_spectrum_tuft.png', dpi=300, bbox_inches='tight')
+plt.show()
+print("Figure saved! Orange peak at 1.65e-8 Hz.")

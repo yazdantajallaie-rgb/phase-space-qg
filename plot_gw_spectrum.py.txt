@@ -1,0 +1,12 @@
+import numpy as np, matplotlib.pyplot as plt
+f = np.logspace(-9.5, -6, 1000)
+f0, A = 1.65e-8, 4.2e-16
+sigma = 0.31 * f0 / 2.355
+Omega = 8e-18 + A * np.exp(-(f-f0)**2/(2*sigma**2))
+plt.loglog(f, Omega, 'orange', lw=3)
+plt.axvline(f0, color='black', ls='--')
+plt.xlabel('f [Hz]'); plt.ylabel(r'$\Omega_{gw} h^2$')
+plt.title('Resonant SGWB from Phase-Space Condensation')
+plt.grid(alpha=0.4); plt.tight_layout()
+plt.savefig('gw_spectrum_tuft.pdf')
+print("Figure generated!")
